@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace SwordLand.DataAccess.MSSQL.Entities
 {
@@ -12,5 +13,7 @@ namespace SwordLand.DataAccess.MSSQL.Entities
         public DateTime CreatedAt { get; set; }
         public bool IsPublished { get; set; }
         public DateTime LastModified { get; set; }
+
+        public ICollection<Comment> Comments { get; set; }
     }
 }

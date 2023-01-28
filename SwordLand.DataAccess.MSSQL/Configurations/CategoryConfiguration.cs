@@ -13,7 +13,12 @@ namespace SwordLand.DataAccess.MSSQL.Configurations
         {
             builder.HasKey(x => x.Id);
 
-            builder.Property(x => x.Title).HasMaxLength(36).IsRequired();
+            builder.Property(x => x.Title)
+                .HasMaxLength(36)
+                .IsRequired();
+
+            builder.HasMany(x => x.Posts)
+                .WithOne(x => x.Category);
         }
     }
 }

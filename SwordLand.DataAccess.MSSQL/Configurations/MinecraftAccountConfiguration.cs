@@ -7,14 +7,14 @@ using System.Text;
 
 namespace SwordLand.DataAccess.MSSQL.Configurations
 {
-    public class SessionConfiguration : IEntityTypeConfiguration<Session>
+    public class MinecraftAccountConfiguration : IEntityTypeConfiguration<MinecraftAccount>
     {
-        public void Configure(EntityTypeBuilder<Session> builder)
+        public void Configure(EntityTypeBuilder<MinecraftAccount> builder)
         {
             builder.HasKey(x => x.Id);
 
-            builder.Property(x => x.Token)
-                .IsRequired();
+            builder.Property(x => x.UserName).HasMaxLength(16).IsRequired();
+            builder.Property(x => x.UUID).HasMaxLength(36).IsRequired();
         }
     }
 }

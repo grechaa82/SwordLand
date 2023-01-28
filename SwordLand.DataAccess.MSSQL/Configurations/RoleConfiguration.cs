@@ -1,9 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using SwordLand.DataAccess.MSSQL.Entities;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace SwordLand.DataAccess.MSSQL.Configurations
 {
@@ -14,6 +11,9 @@ namespace SwordLand.DataAccess.MSSQL.Configurations
             builder.HasKey(x => x.Id);
 
             builder.Property(x => x.NameRole).HasMaxLength(255);
+
+            builder.HasMany(x => x.Users)
+                .WithOne(x => x.Role);
         }
     }
 }

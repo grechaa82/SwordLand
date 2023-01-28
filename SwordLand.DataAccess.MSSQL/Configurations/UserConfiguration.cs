@@ -13,13 +13,20 @@ namespace SwordLand.DataAccess.MSSQL.Configurations
         {
             builder.HasKey(x => x.Id);
 
-            builder.Property(x => x.NickName).HasMaxLength(36).IsRequired();
-            builder.Property(x => x.Email).IsRequired();
-            builder.Property(x => x.HashPassword).IsRequired();
+            builder.Property(x => x.NickName)
+                .HasMaxLength(36)
+                .IsRequired();
+            builder.Property(x => x.Email)
+                .IsRequired();
+            builder.Property(x => x.HashPassword)
+                .IsRequired();
 
-            builder.HasMany(x => x.MinecraftAccounts).WithOne(x => x.User);
-            builder.HasMany(x => x.Posts).WithOne(x => x.User);
-            builder.HasMany(x => x.Sessions).WithOne(x => x.User);
+            builder.HasMany(x => x.MinecraftAccounts)
+                .WithOne(x => x.User);
+            builder.HasMany(x => x.Posts)
+                .WithOne(x => x.User);
+            builder.HasMany(x => x.Sessions)
+                .WithOne(x => x.User);
         }
     }
 }

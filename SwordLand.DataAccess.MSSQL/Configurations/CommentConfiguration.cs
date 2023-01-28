@@ -14,6 +14,9 @@ namespace SwordLand.DataAccess.MSSQL.Configurations
             builder.HasKey(x => x.Id);
 
             builder.Property(x => x.Content).IsRequired();
+
+            builder.HasMany(x => x.Comments)
+                .WithOne(x => x.ParentComment);
         }
     }
 }
