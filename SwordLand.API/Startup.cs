@@ -4,7 +4,12 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.OpenApi.Models;
 using SwordLand.DataAccess.MSSQL;
+using SwordLand.DataAccess.MSSQL.Repositories;
+using SwordLand.BusinessLogic.Services;
+using SwordLand.Core.Interfaces.Repository;
+using SwordLand.Core.Interfaces.Services;
 
 namespace SwordLand.API
 {
@@ -19,7 +24,17 @@ namespace SwordLand.API
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddAutoMapper(typeof(APIMappingProfile), typeof(DataAccessMappingProfile));
+
+            services.AddScoped<IPostRepository, PostRepository>();
+            services.AddScoped<IPostService, PostService>();
+
             services.AddDbContext<SwordLandDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("ApplicationDbContext")));
+
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "SwordLand API", Version = "v1" });
+            });
 
             services.AddControllers();
         }
@@ -30,6 +45,12 @@ namespace SwordLand.API
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("v1/swagger.json", "SwordLand.API v1");
+            });
 
             app.UseHttpsRedirection();
 
