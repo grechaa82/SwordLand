@@ -1,7 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
+using SwordLand.API.Contracts;
 using SwordLand.API.Models;
 using SwordLand.Core.Interfaces.Services;
-using System.Collections.Generic;
+using SwordLand.Core.Models;
 
 namespace SwordLand.API.Controllers
 {
@@ -10,20 +12,46 @@ namespace SwordLand.API.Controllers
     public class PostController : Controller
     {
         private readonly IPostService _postService;
+        private readonly IMapper _mapper;
 
-        public PostController(IPostService postService)
+        public PostController(IPostService postService, IMapper mapper)
         {
             _postService = postService;
+            _mapper = mapper;
+        }
+
+        [HttpGet]
+        public Post[] Posts()
+        {
+            return _postService.Get();
         }
 
         [HttpGet("{postId}")]
-        public IActionResult Post(string postId)
+        public Post Post(string postId)
         {
-            var post = _postService.GetById(postId);
+            return _postService.GetById(postId);
+        }
 
-/*            var result = new PostDTO();*/
+        [HttpPost("[action]")]
+        public Post Create(PostRequest post)
+        {
+            var result = _mapper.Map<PostRequest, Post>(post);
 
-            return Ok(post);
+            return _postService.Create(result);
+        }
+
+        [HttpDelete("{postId}/[action]")]
+        public IActionResult Delete(string postId)
+        {
+            _postService.Delete(postId);
+            return Ok();
+        }
+
+        [HttpPatch("{postId}/[action]")]
+        public IActionResult Update(PostRequest post)
+        {
+            
+            return Ok();
         }
     }
 }

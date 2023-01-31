@@ -1,22 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace SwordLand.Core.Models
+namespace SwordLand.DataAccess.MSSQL.Entities
 {
-    public class Post
+    public class PostEntity
     {
         public Guid Id { get; set; }
-        public User User { get; set; }
-        public string UserId { get; set; }
+        public UserEntity User { get; set; }
         public string Title { get; set; }
         public string Content { get; set; }
         public string Summery { get; set; }
-        public string Category { get; set; }
+        public CategoryEntity Category { get; set; }
         public string PostUrl { get; set; }
         public DateTime CreatedAt { get; set; }
         public bool IsPublished { get; set; }
         public DateTime LastModified { get; set; }
 
-        public ICollection<Comment> Comments { get; set; }
+        /*public ICollection<CommentEntity> Comments { get; set; }*/
     }
 }

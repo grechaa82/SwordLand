@@ -7,9 +7,9 @@ using System.Text;
 
 namespace SwordLand.DataAccess.MSSQL.Configurations
 {
-    public class MinecraftAccountConfiguration : IEntityTypeConfiguration<MinecraftAccount>
+    public class MinecraftAccountConfiguration : IEntityTypeConfiguration<MinecraftAccountEntity>
     {
-        public void Configure(EntityTypeBuilder<MinecraftAccount> builder)
+        public void Configure(EntityTypeBuilder<MinecraftAccountEntity> builder)
         {
             builder.HasKey(x => x.Id);
 

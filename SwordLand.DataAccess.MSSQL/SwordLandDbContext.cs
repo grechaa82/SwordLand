@@ -10,13 +10,13 @@ namespace SwordLand.DataAccess.MSSQL
         {
         }
 
-        public DbSet<Category> Category { get; set; }
-        public DbSet<Comment> Comment { get; set; }
-        public DbSet<MinecraftAccount> MinecraftAccount { get; set; }
-        public DbSet<Post> Post { get; set; }
-        public DbSet<Role> Role { get; set; }
-        public DbSet<Session> Session { get; set; }
-        public DbSet<User> User { get; set; }
+        public DbSet<CategoryEntity> Category { get; set; }
+        public DbSet<CommentEntity> Comment { get; set; }
+        public DbSet<MinecraftAccountEntity> MinecraftAccount { get; set; }
+        public DbSet<PostEntity> Post { get; set; }
+        public DbSet<RoleEntity> Role { get; set; }
+        public DbSet<SessionEntity> Session { get; set; }
+        public DbSet<UserEntity> User { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

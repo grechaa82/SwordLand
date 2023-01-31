@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using SwordLand.API.Contracts;
+using SwordLand.Core.Models;
 
 namespace SwordLand.API
 {
@@ -6,6 +8,7 @@ namespace SwordLand.API
     {
         public APIMappingProfile()
         {
+            CreateMap<Post, PostRequest>().ReverseMap();
         }
     }
 }

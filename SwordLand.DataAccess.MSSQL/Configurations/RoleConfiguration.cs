@@ -4,16 +4,13 @@ using SwordLand.DataAccess.MSSQL.Entities;
 
 namespace SwordLand.DataAccess.MSSQL.Configurations
 {
-    public class RoleConfiguration : IEntityTypeConfiguration<Role>
+    public class RoleConfiguration : IEntityTypeConfiguration<RoleEntity>
     {
-        public void Configure(EntityTypeBuilder<Role> builder)
+        public void Configure(EntityTypeBuilder<RoleEntity> builder)
         {
             builder.HasKey(x => x.Id);
 
             builder.Property(x => x.NameRole).HasMaxLength(255);
-
-            builder.HasMany(x => x.Users)
-                .WithOne(x => x.Role);
         }
     }
 }

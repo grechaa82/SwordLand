@@ -7,9 +7,9 @@ using System.Text;
 
 namespace SwordLand.DataAccess.MSSQL.Configurations
 {
-    public class UserConfiguration : IEntityTypeConfiguration<User>
+    public class UserConfiguration : IEntityTypeConfiguration<UserEntity>
     {
-        public void Configure(EntityTypeBuilder<User> builder)
+        public void Configure(EntityTypeBuilder<UserEntity> builder)
         {
             builder.HasKey(x => x.Id);
 
@@ -21,12 +21,12 @@ namespace SwordLand.DataAccess.MSSQL.Configurations
             builder.Property(x => x.HashPassword)
                 .IsRequired();
 
-            builder.HasMany(x => x.MinecraftAccounts)
-                .WithOne(x => x.User);
-            builder.HasMany(x => x.Posts)
-                .WithOne(x => x.User);
-            builder.HasMany(x => x.Sessions)
-                .WithOne(x => x.User);
+            /*builder.HasMany(x => x.MinecraftAccounts)
+                .WithOne(x => x.User);*/
+            /*builder.HasMany(x => x.Posts)
+                .WithOne(x => x.User);*/
+            /*builder.HasMany(x => x.Sessions)
+                .WithOne(x => x.User);*/
         }
     }
 }

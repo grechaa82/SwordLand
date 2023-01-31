@@ -7,9 +7,9 @@ using System.Text;
 
 namespace SwordLand.DataAccess.MSSQL.Configurations
 {
-    public class SessionConfiguration : IEntityTypeConfiguration<Session>
+    public class SessionConfiguration : IEntityTypeConfiguration<SessionEntity>
     {
-        public void Configure(EntityTypeBuilder<Session> builder)
+        public void Configure(EntityTypeBuilder<SessionEntity> builder)
         {
             builder.HasKey(x => x.Id);
 

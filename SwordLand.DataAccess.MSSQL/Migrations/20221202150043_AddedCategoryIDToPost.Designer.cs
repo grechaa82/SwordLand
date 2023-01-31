@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SwordLand.DataAccess.MSSQL;
 
 namespace SwordLand.DataAccess.MSSQL.Migrations
 {
     [DbContext(typeof(SwordLandDbContext))]
-    partial class SwordLandDbContextModelSnapshot : ModelSnapshot
+    [Migration("20221202150043_AddedCategoryIDToPost")]
+    partial class AddedCategoryIDToPost
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -19,7 +21,7 @@ namespace SwordLand.DataAccess.MSSQL.Migrations
                 .HasAnnotation("ProductVersion", "5.0.17")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("SwordLand.DataAccess.MSSQL.Entities.CategoryEntity", b =>
+            modelBuilder.Entity("SwordLand.DataAccess.MSSQL.Entities.Category", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -35,7 +37,7 @@ namespace SwordLand.DataAccess.MSSQL.Migrations
                     b.ToTable("Category");
                 });
 
-            modelBuilder.Entity("SwordLand.DataAccess.MSSQL.Entities.CommentEntity", b =>
+            modelBuilder.Entity("SwordLand.DataAccess.MSSQL.Entities.Comment", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -60,16 +62,21 @@ namespace SwordLand.DataAccess.MSSQL.Migrations
                     b.Property<Guid?>("PostId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<Guid?>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.HasKey("Id");
 
                     b.HasIndex("ParentCommentId");
 
                     b.HasIndex("PostId");
 
+                    b.HasIndex("UserId");
+
                     b.ToTable("Comment");
                 });
 
-            modelBuilder.Entity("SwordLand.DataAccess.MSSQL.Entities.MinecraftAccountEntity", b =>
+            modelBuilder.Entity("SwordLand.DataAccess.MSSQL.Entities.MinecraftAccount", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -101,13 +108,16 @@ namespace SwordLand.DataAccess.MSSQL.Migrations
                     b.ToTable("MinecraftAccount");
                 });
 
-            modelBuilder.Entity("SwordLand.DataAccess.MSSQL.Entities.PostEntity", b =>
+            modelBuilder.Entity("SwordLand.DataAccess.MSSQL.Entities.Post", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("CategoryId")
+                    b.Property<string>("CategoryId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid?>("CategoryId1")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Content")
@@ -141,14 +151,14 @@ namespace SwordLand.DataAccess.MSSQL.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CategoryId");
+                    b.HasIndex("CategoryId1");
 
                     b.HasIndex("UserId");
 
                     b.ToTable("Post");
                 });
 
-            modelBuilder.Entity("SwordLand.DataAccess.MSSQL.Entities.RoleEntity", b =>
+            modelBuilder.Entity("SwordLand.DataAccess.MSSQL.Entities.Role", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -163,7 +173,7 @@ namespace SwordLand.DataAccess.MSSQL.Migrations
                     b.ToTable("Role");
                 });
 
-            modelBuilder.Entity("SwordLand.DataAccess.MSSQL.Entities.SessionEntity", b =>
+            modelBuilder.Entity("SwordLand.DataAccess.MSSQL.Entities.Session", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -186,7 +196,7 @@ namespace SwordLand.DataAccess.MSSQL.Migrations
                     b.ToTable("Session");
                 });
 
-            modelBuilder.Entity("SwordLand.DataAccess.MSSQL.Entities.UserEntity", b =>
+            modelBuilder.Entity("SwordLand.DataAccess.MSSQL.Entities.User", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -227,38 +237,44 @@ namespace SwordLand.DataAccess.MSSQL.Migrations
                     b.ToTable("User");
                 });
 
-            modelBuilder.Entity("SwordLand.DataAccess.MSSQL.Entities.CommentEntity", b =>
+            modelBuilder.Entity("SwordLand.DataAccess.MSSQL.Entities.Comment", b =>
                 {
-                    b.HasOne("SwordLand.DataAccess.MSSQL.Entities.CommentEntity", "ParentComment")
-                        .WithMany()
+                    b.HasOne("SwordLand.DataAccess.MSSQL.Entities.Comment", "ParentComment")
+                        .WithMany("Comments")
                         .HasForeignKey("ParentCommentId");
 
-                    b.HasOne("SwordLand.DataAccess.MSSQL.Entities.PostEntity", "Post")
-                        .WithMany()
+                    b.HasOne("SwordLand.DataAccess.MSSQL.Entities.Post", "Post")
+                        .WithMany("Comments")
                         .HasForeignKey("PostId");
+
+                    b.HasOne("SwordLand.DataAccess.MSSQL.Entities.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
 
                     b.Navigation("ParentComment");
 
                     b.Navigation("Post");
+
+                    b.Navigation("User");
                 });
 
-            modelBuilder.Entity("SwordLand.DataAccess.MSSQL.Entities.MinecraftAccountEntity", b =>
+            modelBuilder.Entity("SwordLand.DataAccess.MSSQL.Entities.MinecraftAccount", b =>
                 {
-                    b.HasOne("SwordLand.DataAccess.MSSQL.Entities.UserEntity", "User")
-                        .WithMany()
+                    b.HasOne("SwordLand.DataAccess.MSSQL.Entities.User", "User")
+                        .WithMany("MinecraftAccounts")
                         .HasForeignKey("UserId");
 
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("SwordLand.DataAccess.MSSQL.Entities.PostEntity", b =>
+            modelBuilder.Entity("SwordLand.DataAccess.MSSQL.Entities.Post", b =>
                 {
-                    b.HasOne("SwordLand.DataAccess.MSSQL.Entities.CategoryEntity", "Category")
-                        .WithMany()
-                        .HasForeignKey("CategoryId");
+                    b.HasOne("SwordLand.DataAccess.MSSQL.Entities.Category", "Category")
+                        .WithMany("Posts")
+                        .HasForeignKey("CategoryId1");
 
-                    b.HasOne("SwordLand.DataAccess.MSSQL.Entities.UserEntity", "User")
-                        .WithMany()
+                    b.HasOne("SwordLand.DataAccess.MSSQL.Entities.User", "User")
+                        .WithMany("Posts")
                         .HasForeignKey("UserId");
 
                     b.Navigation("Category");
@@ -266,22 +282,51 @@ namespace SwordLand.DataAccess.MSSQL.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("SwordLand.DataAccess.MSSQL.Entities.SessionEntity", b =>
+            modelBuilder.Entity("SwordLand.DataAccess.MSSQL.Entities.Session", b =>
                 {
-                    b.HasOne("SwordLand.DataAccess.MSSQL.Entities.UserEntity", "User")
-                        .WithMany()
+                    b.HasOne("SwordLand.DataAccess.MSSQL.Entities.User", "User")
+                        .WithMany("Sessions")
                         .HasForeignKey("UserId");
 
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("SwordLand.DataAccess.MSSQL.Entities.UserEntity", b =>
+            modelBuilder.Entity("SwordLand.DataAccess.MSSQL.Entities.User", b =>
                 {
-                    b.HasOne("SwordLand.DataAccess.MSSQL.Entities.RoleEntity", "Role")
-                        .WithMany()
+                    b.HasOne("SwordLand.DataAccess.MSSQL.Entities.Role", "Role")
+                        .WithMany("Users")
                         .HasForeignKey("RoleId");
 
                     b.Navigation("Role");
+                });
+
+            modelBuilder.Entity("SwordLand.DataAccess.MSSQL.Entities.Category", b =>
+                {
+                    b.Navigation("Posts");
+                });
+
+            modelBuilder.Entity("SwordLand.DataAccess.MSSQL.Entities.Comment", b =>
+                {
+                    b.Navigation("Comments");
+                });
+
+            modelBuilder.Entity("SwordLand.DataAccess.MSSQL.Entities.Post", b =>
+                {
+                    b.Navigation("Comments");
+                });
+
+            modelBuilder.Entity("SwordLand.DataAccess.MSSQL.Entities.Role", b =>
+                {
+                    b.Navigation("Users");
+                });
+
+            modelBuilder.Entity("SwordLand.DataAccess.MSSQL.Entities.User", b =>
+                {
+                    b.Navigation("MinecraftAccounts");
+
+                    b.Navigation("Posts");
+
+                    b.Navigation("Sessions");
                 });
 #pragma warning restore 612, 618
         }

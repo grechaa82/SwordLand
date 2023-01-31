@@ -5,6 +5,9 @@ namespace SwordLand.Core.Interfaces.Services
 {
     public interface IPostService
     {
-        IEnumerable<Post> GetById(string postId);
+        Post[] Get();
+        Post GetById(string postId);
+        Post Create(Post post);
+        void Delete(string postId);
     }
 }

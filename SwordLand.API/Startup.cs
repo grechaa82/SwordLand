@@ -25,6 +25,9 @@ namespace SwordLand.API
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddAutoMapper(typeof(APIMappingProfile), typeof(DataAccessMappingProfile));
+            
+            services.AddScoped<IBlogsRepository, BlogsRepository>();
+            services.AddScoped<IBlogsService, BlogsService>();
 
             services.AddScoped<IPostRepository, PostRepository>();
             services.AddScoped<IPostService, PostService>();

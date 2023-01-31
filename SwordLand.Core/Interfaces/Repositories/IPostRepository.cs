@@ -5,6 +5,10 @@ namespace SwordLand.Core.Interfaces.Repository
 {
     public interface IPostRepository
     {
-        IEnumerable<Post> GetById(string postId);
+        Post[] Get();
+        Post GetById(string postId);
+        Post Create(Post post);
+        void Delete(Post post);
+        User GetUser(string userId);
     }
 }
