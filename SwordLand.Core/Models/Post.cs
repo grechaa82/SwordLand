@@ -16,7 +16,5 @@ namespace SwordLand.Core.Models
         public DateTime CreatedAt { get; set; }
         public bool IsPublished { get; set; }
         public DateTime LastModified { get; set; }
-
-        public ICollection<Comment> Comments { get; set; }
     }
 }

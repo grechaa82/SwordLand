@@ -17,15 +17,17 @@ namespace SwordLand.API.Controllers
         }
 
         [HttpGet]
-        public User[] Blogs()
+        public IActionResult Blogs()
         {
-            return _blogsService.Get();
+            var result = _blogsService.Get();
+            return Ok(result);
         }
 
-        [HttpGet("{postId}")]
-        public User[] UserBlog(string postId)
+        [HttpGet("{userNickName}")]
+        public IActionResult UserBlog(string userNickName)
         {
-            return _blogsService.GetById(postId);
+            var result = _blogsService.GetByName(userNickName);
+            return Ok(result);
         }
     }
 }

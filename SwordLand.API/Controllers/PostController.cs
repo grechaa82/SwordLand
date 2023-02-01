@@ -27,7 +27,7 @@ namespace SwordLand.API.Controllers
         }
 
         [HttpGet("{postId}")]
-        public Post Post(string postId)
+        public (Post, Comment[]) Post(string postId)
         {
             return _postService.GetById(postId);
         }

@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using SwordLand.Core.Interfaces.Repository;
 using SwordLand.Core.Models;
 using SwordLand.DataAccess.MSSQL.Entities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -21,22 +22,27 @@ namespace SwordLand.DataAccess.MSSQL.Repositories
 
         public User[] Get()
         {
-            var blogs = _context.User.OrderBy(x => x.Rating)
+            var result = _context.User.OrderBy(x => x.Rating)
                 .Include(x => x.Role)
                 .Take(10)
                 .AsNoTracking()
                 .ToArray();
 
-            return _mapper.Map<UserEntity[], User[]>(blogs);
+            return _mapper.Map<UserEntity[], User[]>(result);
         }
 
-        public User[] GetById(string userId)
+        public User GetByName(string name)
         {
-            var blog = _context.User.Where(x => x.Id.ToString() == userId)
+            var result = _context.User.Where(x => x.NickName.ToLower() == name.ToLower())
                 .AsNoTracking()
-                .ToArray();
+                .FirstOrDefault();
 
-            return _mapper.Map<UserEntity[], User[]>(blog);
+            if (result is null)
+            {
+                throw new ArgumentNullException(nameof(name));
+            }
+
+            return _mapper.Map<UserEntity, User>(result);
         }
     }
 }

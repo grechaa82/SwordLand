@@ -10,6 +10,7 @@ using SwordLand.DataAccess.MSSQL.Repositories;
 using SwordLand.BusinessLogic.Services;
 using SwordLand.Core.Interfaces.Repository;
 using SwordLand.Core.Interfaces.Services;
+using SwordLand.API.Middleware;
 
 namespace SwordLand.API
 {
@@ -54,6 +55,8 @@ namespace SwordLand.API
             {
                 c.SwaggerEndpoint("v1/swagger.json", "SwordLand.API v1");
             });
+
+            app.UseMiddleware<ExceptionHandlingMiddleware>();
 
             app.UseHttpsRedirection();
 

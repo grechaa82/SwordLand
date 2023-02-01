@@ -19,9 +19,5 @@
     <ProjectReference Include="..\SwordLand.DataAccess.MSSQL\SwordLand.DataAccess.MSSQL.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Middleware\" />
-  </ItemGroup>
-
 
 </Project>

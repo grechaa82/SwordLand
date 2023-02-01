@@ -4,7 +4,6 @@ using SwordLand.Core.Interfaces.Repository;
 using SwordLand.Core.Models;
 using SwordLand.DataAccess.MSSQL.Entities;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 
 namespace SwordLand.DataAccess.MSSQL.Repositories
@@ -22,7 +21,8 @@ namespace SwordLand.DataAccess.MSSQL.Repositories
 
         public Post[] Get()
         {
-            var posts = _context.Post.Where(x => x.IsPublished == true)
+            var posts = _context.Post
+                .Where(x => x.IsPublished == true)
                 .Include(x => x.User)
                 .Include(x => x.Category)
                 .Take(20)
@@ -34,13 +34,25 @@ namespace SwordLand.DataAccess.MSSQL.Repositories
 
         public Post GetById(string postId)
         {
-            var posts = _context.Post.Where(x => x.IsPublished == true && x.Id.ToString() == postId)
+            var posts = _context.Post
+                .Where(x => x.IsPublished == true && x.Id.ToString() == postId)
                 .Include(x => x.User)
                 .Include(x => x.Category)
                 .AsNoTracking()
                 .FirstOrDefault();
 
             return _mapper.Map<PostEntity, Post>(posts);
+        }
+
+        public Comment[] GetCommentsById(string postId)
+        {
+            var comments = _context.Comment
+                .Where(x => x.Post.ToString() == postId)
+                .Include(x => x.User)
+                .AsNoTracking()
+                .ToArray();
+
+            return _mapper.Map<CommentEntity[], Comment[]>(comments);
         }
 
         public Post Create(Post post)
@@ -73,8 +85,14 @@ namespace SwordLand.DataAccess.MSSQL.Repositories
         {
             //TODO: Return an error if the user is not found
 
-            var result = _context.User.Where(x => x.Id.ToString() == userId)
-                .First();
+            var result = _context.User
+                .AsNoTracking()
+                .FirstOrDefault(x => x.Id.ToString() == userId);
+
+            if (result is null)
+            {
+                throw new ArgumentNullException(nameof(userId));
+            }
 
             return _mapper.Map<UserEntity, User>(result);
         }

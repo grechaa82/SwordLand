@@ -18,9 +18,9 @@ namespace SwordLand.BusinessLogic.Services
             return _blogsRepository.Get();
         }
 
-        public User[] GetById(string postId)
+        public User GetByName(string name)
         {
-            return _blogsRepository.GetById(postId);
+            return _blogsRepository.GetByName(name);
         }
     }
 }

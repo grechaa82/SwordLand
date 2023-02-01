@@ -5,6 +5,6 @@ namespace SwordLand.Core.Interfaces.Services
     public interface IBlogsService
     {
         User[] Get();
-        User[] GetById(string postId);
+        User GetByName(string name);
     }
 }

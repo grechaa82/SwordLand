@@ -19,10 +19,12 @@ namespace SwordLand.BusinessLogic.Services
             return _postRepository.Get();
         }
 
-        public Post GetById(string postId)
+        public (Post, Comment[]) GetById(string postId)
         {
-            var result = _postRepository.GetById(postId);
-            return result;
+            var post = _postRepository.GetById(postId);
+            var comments = _postRepository.GetCommentsById(postId);
+
+            return (post, comments);
         }
         
         public Post Create(Post post)
@@ -31,7 +33,7 @@ namespace SwordLand.BusinessLogic.Services
             var date = DateTime.Now;
 
             // TODO: check if the user exists
-            var user = _postRepository.GetUser(post.Id.ToString());
+            var user = _postRepository.GetUser(post.UserId.ToString());
 
             Post result = new Post
             {
@@ -40,6 +42,7 @@ namespace SwordLand.BusinessLogic.Services
                 Title = post.Title,
                 Content = post.Content,
                 Summery = post.Summery,
+                Category = post.Category,
                 PostUrl = "Post/"+guid.ToString(),
                 CreatedAt = date,
                 IsPublished = true,

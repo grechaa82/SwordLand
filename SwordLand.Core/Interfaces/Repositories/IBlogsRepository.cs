@@ -6,6 +6,6 @@ namespace SwordLand.Core.Interfaces.Repository
     public interface IBlogsRepository
     {
         User[] Get();
-        User[] GetById(string postId);
+        User GetByName(string name);
     }
 }
