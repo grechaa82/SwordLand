@@ -7,9 +7,10 @@ namespace SwordLand.Core.Interfaces.Repository
     {
         Post[] Get();
         Post GetById(string postId);
-        Comment[] GetCommentsById(string postId);
+        List<Comment> GetCommentsById(string postId);
         Post Create(Post post);
         void Delete(Post post);
         User GetUser(string userId);
+        Category GetCategory(string category);
     }
 }

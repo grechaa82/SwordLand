@@ -4,6 +4,7 @@ using SwordLand.API.Contracts;
 using SwordLand.API.Models;
 using SwordLand.Core.Interfaces.Services;
 using SwordLand.Core.Models;
+using System.Collections.Generic;
 
 namespace SwordLand.API.Controllers
 {
@@ -27,17 +28,21 @@ namespace SwordLand.API.Controllers
         }
 
         [HttpGet("{postId}")]
-        public (Post, Comment[]) Post(string postId)
+        public (Post, List<Comment>) Post(string postId)
         {
-            return _postService.GetById(postId);
+            var result = _postService.GetById(postId);
+
+            return result;
         }
 
         [HttpPost("[action]")]
         public Post Create(PostRequest post)
         {
-            var result = _mapper.Map<PostRequest, Post>(post);
-
-            return _postService.Create(result);
+            return _postService.Create(post.UserId,
+                post.Title,
+                post.Content,
+                post.Summery,
+                post.Category);
         }
 
         [HttpDelete("{postId}/[action]")]

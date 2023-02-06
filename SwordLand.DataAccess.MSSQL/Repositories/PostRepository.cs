@@ -4,6 +4,7 @@ using SwordLand.Core.Interfaces.Repository;
 using SwordLand.Core.Models;
 using SwordLand.DataAccess.MSSQL.Entities;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace SwordLand.DataAccess.MSSQL.Repositories
@@ -44,15 +45,16 @@ namespace SwordLand.DataAccess.MSSQL.Repositories
             return _mapper.Map<PostEntity, Post>(posts);
         }
 
-        public Comment[] GetCommentsById(string postId)
+        public List<Comment> GetCommentsById(string postId)
         {
             var comments = _context.Comment
-                .Where(x => x.Post.ToString() == postId)
                 .Include(x => x.User)
+                .Include(x => x.Post)
+                .Where(x => x.Post.Id.ToString() == postId)
                 .AsNoTracking()
-                .ToArray();
+                .ToList();
 
-            return _mapper.Map<CommentEntity[], Comment[]>(comments);
+            return _mapper.Map<List<CommentEntity>, List<Comment>>(comments);
         }
 
         public Post Create(Post post)
@@ -83,8 +85,6 @@ namespace SwordLand.DataAccess.MSSQL.Repositories
 
         public User GetUser(string userId)
         {
-            //TODO: Return an error if the user is not found
-
             var result = _context.User
                 .AsNoTracking()
                 .FirstOrDefault(x => x.Id.ToString() == userId);
@@ -95,6 +95,20 @@ namespace SwordLand.DataAccess.MSSQL.Repositories
             }
 
             return _mapper.Map<UserEntity, User>(result);
+        }
+
+        public Category GetCategory(string category)
+        {
+            var result = _context.Category
+                .AsNoTracking()
+                .FirstOrDefault(x => x.Title == category);
+
+            if (result is null)
+            {
+                throw new ArgumentNullException(nameof(category));
+            }
+
+            return _mapper.Map<CategoryEntity, Category>(result);
         }
     }
 }

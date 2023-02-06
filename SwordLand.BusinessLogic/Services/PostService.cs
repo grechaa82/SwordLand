@@ -19,35 +19,33 @@ namespace SwordLand.BusinessLogic.Services
             return _postRepository.Get();
         }
 
-        public (Post, Comment[]) GetById(string postId)
+        public (Post, List<Comment>) GetById(string postId)
         {
             var post = _postRepository.GetById(postId);
             var comments = _postRepository.GetCommentsById(postId);
 
+            //TODO: Добавить в модель Post ICollection<Comment> и вставить туда комменты. Лучше сделать на слое с базой данных
+
             return (post, comments);
         }
         
-        public Post Create(Post post)
+        public Post Create(string userId, string title, string content, string summery, string category)
         {
+            var user = _postRepository.GetUser(userId);
+            var _category = _postRepository.GetCategory(category);
+            
             var guid = Guid.NewGuid();
             var date = DateTime.Now;
 
-            // TODO: check if the user exists
-            var user = _postRepository.GetUser(post.UserId.ToString());
-
-            Post result = new Post
-            {
-                Id = guid,
-                User = user,
-                Title = post.Title,
-                Content = post.Content,
-                Summery = post.Summery,
-                Category = post.Category,
-                PostUrl = "Post/"+guid.ToString(),
-                CreatedAt = date,
-                IsPublished = true,
-                LastModified = date
-            };
+            var result = Post.Create(
+                guid, 
+                user,
+                title,
+                content,
+                summery,
+                _category,
+                date,
+                date);
 
             return _postRepository.Create(result);
         }
@@ -56,7 +54,7 @@ namespace SwordLand.BusinessLogic.Services
         {
             var post = _postRepository.GetById(postId);
 
-            Post result = new Post
+            /*Post result = new Post
             {
                 Id = post.Id,
                 User = post.User,
@@ -68,9 +66,9 @@ namespace SwordLand.BusinessLogic.Services
                 CreatedAt = post.CreatedAt,
                 IsPublished = false,
                 LastModified = DateTime.Now
-            };
+            };*/
 
-            _postRepository.Delete(result);
+            _postRepository.Delete(null);
         }
     }
 }
