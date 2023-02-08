@@ -8,6 +8,7 @@ namespace SwordLand.Core.Interfaces.Services
         Post[] Get();
         (Post, List<Comment>) GetById(string postId);
         Post Create(string userId, string title, string content, string summery, string category);
+        void Update(string id, string userId, string title, string content, string summery, string category);
         void Delete(string postId);
     }
 }

@@ -29,23 +29,29 @@ namespace SwordLand.BusinessLogic.Services
             return (post, comments);
         }
         
-        public Post Create(string userId, string title, string content, string summery, string category)
+        public Post Create(
+            string userId, 
+            string title, 
+            string content, 
+            string summery, 
+            string category)
         {
-            var user = _postRepository.GetUser(userId);
-            var _category = _postRepository.GetCategory(category);
+            var User = _postRepository.GetUser(userId);
+            var Category = _postRepository.GetCategory(category);
             
             var guid = Guid.NewGuid();
             var date = DateTime.Now;
 
             var result = Post.Create(
                 guid, 
-                user,
+                User,
                 title,
                 content,
                 summery,
-                _category,
+                Category,
                 date,
-                date);
+                date,
+                default);
 
             return _postRepository.Create(result);
         }
@@ -54,21 +60,46 @@ namespace SwordLand.BusinessLogic.Services
         {
             var post = _postRepository.GetById(postId);
 
-            /*Post result = new Post
+            if (post is null)
             {
-                Id = post.Id,
-                User = post.User,
-                Title = post.Title,
-                Content = post.Content,
-                Summery = post.Summery,
-                Category = post.Category,
-                PostUrl = post.PostUrl,
-                CreatedAt = post.CreatedAt,
-                IsPublished = false,
-                LastModified = DateTime.Now
-            };*/
+                throw new ArgumentNullException(nameof(post));
+            }
 
-            _postRepository.Delete(null);
+            var deletedPost = Post.Create(
+                post.Id,
+                post.User,
+                post.Title,
+                post.Content,
+                post.Summery,
+                post.Category,
+                post.CreatedAt,
+                DateTime.Now,
+                false);
+
+            _postRepository.Delete(deletedPost);
+        }
+
+        public void Update(string id, string userId, string title, string content, string summery, string category)
+        {
+            var post = _postRepository.GetById(id);
+
+            if (post is null)
+            {
+                throw new ArgumentNullException(nameof(post));
+            }
+
+            var updatedPost = Post.Create(
+                post.Id,
+                post.User,
+                title,
+                content,
+                summery,
+                post.Category,
+                post.CreatedAt,
+                DateTime.Now,
+                default);
+
+            _postRepository.Update(updatedPost);
         }
     }
 }

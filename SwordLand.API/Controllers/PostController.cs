@@ -15,7 +15,9 @@ namespace SwordLand.API.Controllers
         private readonly IPostService _postService;
         private readonly IMapper _mapper;
 
-        public PostController(IPostService postService, IMapper mapper)
+        public PostController(
+            IPostService postService, 
+            IMapper mapper)
         {
             _postService = postService;
             _mapper = mapper;
@@ -38,7 +40,8 @@ namespace SwordLand.API.Controllers
         [HttpPost("[action]")]
         public Post Create(PostRequest post)
         {
-            return _postService.Create(post.UserId,
+            return _postService.Create(
+                post.UserId,
                 post.Title,
                 post.Content,
                 post.Summery,
@@ -53,9 +56,16 @@ namespace SwordLand.API.Controllers
         }
 
         [HttpPatch("{postId}/[action]")]
-        public IActionResult Update(PostRequest post)
+        public IActionResult Update(PostRequest post, string postId)
         {
-            
+            _postService.Update(
+                postId,
+                post.UserId,
+                post.Title,
+                post.Content,
+                post.Summery,
+                post.Category);
+
             return Ok();
         }
     }

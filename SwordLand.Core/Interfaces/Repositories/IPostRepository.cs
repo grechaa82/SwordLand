@@ -1,4 +1,5 @@
 ﻿using SwordLand.Core.Models;
+using System;
 using System.Collections.Generic;
 
 namespace SwordLand.Core.Interfaces.Repository
@@ -12,5 +13,6 @@ namespace SwordLand.Core.Interfaces.Repository
         void Delete(Post post);
         User GetUser(string userId);
         Category GetCategory(string category);
+        void Update(Post post);
     }
 }

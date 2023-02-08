@@ -14,7 +14,9 @@ namespace SwordLand.DataAccess.MSSQL.Repositories
         private readonly SwordLandDbContext _context;
         private readonly IMapper _mapper;
 
-        public PostRepository(SwordLandDbContext context, IMapper mapper)
+        public PostRepository(
+            SwordLandDbContext context, 
+            IMapper mapper)
         {
             _context = context;
             _mapper = mapper;
@@ -109,6 +111,18 @@ namespace SwordLand.DataAccess.MSSQL.Repositories
             }
 
             return _mapper.Map<CategoryEntity, Category>(result);
+        }
+
+        public void Update(Post post)
+        {
+            var result = _mapper.Map<Post, PostEntity>(post);
+
+            using (_context)
+            {
+                _context.Update(result);
+
+                _context.SaveChanges();
+            }
         }
     }
 }
