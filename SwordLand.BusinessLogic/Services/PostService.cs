@@ -24,7 +24,15 @@ namespace SwordLand.BusinessLogic.Services
             var post = _postRepository.GetById(postId);
             var comments = _postRepository.GetCommentsById(postId);
 
-            //TODO: Добавить в модель Post ICollection<Comment> и вставить туда комменты. Лучше сделать на слое с базой данных
+            if (post == null)
+            {
+                throw new ArgumentNullException($"{nameof(post)} is incorrect");
+            }
+
+            /*if (comments == null)
+            {
+                throw new ArgumentNullException($"{nameof(comments)} is incorrect");
+            }*/
 
             return (post, comments);
         }
@@ -79,7 +87,13 @@ namespace SwordLand.BusinessLogic.Services
             _postRepository.Delete(deletedPost);
         }
 
-        public void Update(string id, string userId, string title, string content, string summery, string category)
+        public void Update(
+            string id, 
+            string userId, 
+            string title, 
+            string content, 
+            string summery, 
+            string category)
         {
             var post = _postRepository.GetById(id);
 

@@ -37,14 +37,19 @@ namespace SwordLand.DataAccess.MSSQL.Repositories
 
         public Post GetById(string postId)
         {
-            var posts = _context.Post
+            var post = _context.Post
                 .Where(x => x.IsPublished == true && x.Id.ToString() == postId)
                 .Include(x => x.User)
                 .Include(x => x.Category)
                 .AsNoTracking()
                 .FirstOrDefault();
 
-            return _mapper.Map<PostEntity, Post>(posts);
+            if (post == null)
+            {
+                throw new ArgumentNullException($"{nameof(post)} is incorrect");
+            }
+
+            return _mapper.Map<PostEntity, Post>(post);
         }
 
         public List<Comment> GetCommentsById(string postId)
