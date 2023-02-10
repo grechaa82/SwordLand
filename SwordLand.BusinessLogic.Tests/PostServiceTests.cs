@@ -1,9 +1,12 @@
 using AutoFixture;
 using Moq;
 using SwordLand.BusinessLogic.Services;
+using SwordLand.BusinessLogic.Tests.ModelsCreators;
 using SwordLand.Core.Interfaces.Repository;
 using SwordLand.Core.Models;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -26,10 +29,17 @@ namespace SwordLand.BusinessLogic.Tests
         public void Get__ShouldReturnArrayPosts()
         {
             // Arrange
+            var postsDto = PostCreater.CreateManyPost(5);
+
+            _postRepositoryMock.Setup(x => x.Get())
+                .Returns(postsDto.ToArray());
 
             // Act
+            var posts = _postService.Get();
 
             // Assert
+            Assert.NotNull(posts);
+            Assert.True(posts.Count() == 5);
         }
 
         [Fact]
@@ -59,7 +69,7 @@ namespace SwordLand.BusinessLogic.Tests
         public void GetById_WhenPostDoesNotExist_ArgumentNullException()
         {
             // Arrange
-            var exceptionMessage = "Value cannot be null. (Parameter 'postId is incorrect')";
+            var exceptionMessage = "Value cannot be null. (Parameter 'post is incorrect')";
 
             // Act
             Action postAction = () =>_postService.GetById(Guid.NewGuid().ToString());
@@ -67,6 +77,20 @@ namespace SwordLand.BusinessLogic.Tests
             // Assert
             ArgumentException exception = Assert.Throws<ArgumentNullException>(postAction);
             Assert.Equal(exceptionMessage, exception.Message);
+        }
+
+        [Fact]
+        public void TestingPostFake()
+        {
+            // Arrange
+            var post = PostCreater.CreateOnePost();
+            var posts = PostCreater.CreateManyPost(5);
+
+            // Act
+
+            // Assert
+            Assert.NotNull(post);
+            Assert.True(posts.Count() == 5);
         }
     }
 }
