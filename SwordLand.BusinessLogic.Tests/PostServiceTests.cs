@@ -17,13 +17,14 @@ namespace SwordLand.BusinessLogic.Tests
         private readonly PostService _postService;
         private readonly Mock<IPostRepository> _postRepositoryMock = new Mock<IPostRepository>();
         private Fixture _fixture = new Fixture();
+        private Post _post = PostCreater.CreateOnePost();
 
         public PostServiceTests()
         {
             _postService = new PostService(_postRepositoryMock.Object);
-
-
         }
+
+        #region Get
 
         [Fact]
         public void Get__ShouldReturnArrayPosts()
@@ -41,6 +42,10 @@ namespace SwordLand.BusinessLogic.Tests
             Assert.NotNull(posts);
             Assert.True(posts.Count() == 5);
         }
+
+        #endregion
+
+        #region GetById
 
         [Fact]
         public void GetById_WhenPostExists_ShouldReturnPost()
@@ -61,8 +66,8 @@ namespace SwordLand.BusinessLogic.Tests
             var post = _postService.GetById(postId.ToString());
 
             // Assert
-            Assert.NotNull(post.Item1);
-            Assert.Equal(postId, post.Item1.Id);
+            Assert.NotNull(post);
+            Assert.Equal(postId, post.Id);
         }
 
         [Fact]
@@ -72,25 +77,13 @@ namespace SwordLand.BusinessLogic.Tests
             var exceptionMessage = "Value cannot be null. (Parameter 'post is incorrect')";
 
             // Act
-            Action postAction = () =>_postService.GetById(Guid.NewGuid().ToString());
+            Action postAction = () => _postService.GetById(Guid.NewGuid().ToString());
 
             // Assert
             ArgumentException exception = Assert.Throws<ArgumentNullException>(postAction);
             Assert.Equal(exceptionMessage, exception.Message);
         }
 
-        [Fact]
-        public void TestingPostFake()
-        {
-            // Arrange
-            var post = PostCreater.CreateOnePost();
-            var posts = PostCreater.CreateManyPost(5);
-
-            // Act
-
-            // Assert
-            Assert.NotNull(post);
-            Assert.True(posts.Count() == 5);
-        }
+        #endregion
     }
 }

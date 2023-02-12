@@ -6,10 +6,12 @@ namespace SwordLand.BusinessLogic.Tests.ModelsCreators
 {
     public class PostCreater
     {
-        private static User _user = User.Create(
+        private static User _user = User.Create
+        (
             "string",
             "email@email.com",
-            "b109f3bbbc244eb82441917ed06d618b9008dd09b3befd1b5e07394c706a8bb980b1d7785e5976ec049b46df5f1326af5a2ea6d103fd07c95385ffab0cacbc86");
+            "b109f3bbbc244eb82441917ed06d618b9008dd09b3befd1b5e07394c706a8bb980b1d7785e5976ec049b46df5f1326af5a2ea6d103fd07c95385ffab0cacbc86"
+        );
         private static Category _category = Category.Create("string");
         private static Guid _id = Guid.NewGuid();
         private static string _text = "Lorem ipsum dolor sit amet consectetur";

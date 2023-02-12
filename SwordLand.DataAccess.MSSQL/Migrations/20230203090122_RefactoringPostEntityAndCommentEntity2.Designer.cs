@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SwordLand.DataAccess.MSSQL;
 
 namespace SwordLand.DataAccess.MSSQL.Migrations
 {
     [DbContext(typeof(SwordLandDbContext))]
-    partial class SwordLandDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230203090122_RefactoringPostEntityAndCommentEntity2")]
+    partial class RefactoringPostEntityAndCommentEntity2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

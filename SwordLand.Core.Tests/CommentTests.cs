@@ -14,19 +14,9 @@ namespace SwordLand.Core.Tests
         private static Category _category = Category.Create("category");
         private static DateTime _date = DateTime.Now;
         private static string _text = Guid.NewGuid().ToString();
-        private static Post _post = Post.Create(
-                _id,
-                _user,
-                _text,
-                _text,
-                _text,
-                _category,
-                _date,
-                _date,
-                default);
         private static Comment _parentComment = Comment.Create(
-            _user, 
-            _post,
+            _user,
+            _id,
             _text,
             null);
 
@@ -40,14 +30,14 @@ namespace SwordLand.Core.Tests
             // Act
             var comment = Comment.Create(
                 _user,
-                _post,
+                _id,
                 _text,
                 _parentComment);
 
             // Assert
             Assert.NotNull(comment);
             Assert.Equal(_user, comment.User);
-            Assert.Equal(_post, comment.Post);
+            Assert.Equal(_id, comment.PostId);
             Assert.Equal(_text, comment.Content);
             Assert.Equal(_parentComment, comment.ParentComment);
         }
@@ -66,7 +56,7 @@ namespace SwordLand.Core.Tests
             // Act
             Action commentAction = () => Comment.Create(
                 user,
-                _post,
+                _id,
                 _text,
                 _parentComment);
 
@@ -83,13 +73,13 @@ namespace SwordLand.Core.Tests
         public void Create_WhenPostNull_ArgumentNullException()
         {
             // Arrange
-            Post post = null;
-            var exceptionMessage = "Value cannot be null. (Parameter 'post cannot be null')";
+            var postId = Guid.Empty;
+            var exceptionMessage = "Value cannot be null. (Parameter 'postId cannot be null or empty')";
 
             // Act
             Action commentAction = () => Comment.Create(
                 _user,
-                post,
+                postId,
                 _text,
                 _parentComment);
 
@@ -112,7 +102,7 @@ namespace SwordLand.Core.Tests
             // Act
             Action commentAction = () => Comment.Create(
                 _user,
-                _post,
+                _id,
                 content,
                 _parentComment);
 
@@ -131,7 +121,7 @@ namespace SwordLand.Core.Tests
             // Act
             Action commentAction = () => Comment.Create(
                 _user,
-                _post,
+                _id,
                 content,
                 _parentComment);
 

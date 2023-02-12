@@ -41,6 +41,7 @@ namespace SwordLand.DataAccess.MSSQL.Repositories
                 .Where(x => x.IsPublished == true && x.Id.ToString() == postId)
                 .Include(x => x.User)
                 .Include(x => x.Category)
+                .Include(x => x.Comments)
                 .AsNoTracking()
                 .FirstOrDefault();
 
@@ -50,18 +51,6 @@ namespace SwordLand.DataAccess.MSSQL.Repositories
             }
 
             return _mapper.Map<PostEntity, Post>(post);
-        }
-
-        public List<Comment> GetCommentsById(string postId)
-        {
-            var comments = _context.Comment
-                .Include(x => x.User)
-                .Include(x => x.Post)
-                .Where(x => x.Post.Id.ToString() == postId)
-                .AsNoTracking()
-                .ToList();
-
-            return _mapper.Map<List<CommentEntity>, List<Comment>>(comments);
         }
 
         public Post Create(Post post)

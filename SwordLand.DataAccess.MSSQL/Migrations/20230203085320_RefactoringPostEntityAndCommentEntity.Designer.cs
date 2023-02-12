@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SwordLand.DataAccess.MSSQL;
 
 namespace SwordLand.DataAccess.MSSQL.Migrations
 {
     [DbContext(typeof(SwordLandDbContext))]
-    partial class SwordLandDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230203085320_RefactoringPostEntityAndCommentEntity")]
+    partial class RefactoringPostEntityAndCommentEntity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -57,7 +59,10 @@ namespace SwordLand.DataAccess.MSSQL.Migrations
                     b.Property<Guid?>("ParentCommentId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("PostId")
+                    b.Property<Guid?>("PostEntityId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("PostId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid?>("UserId")
@@ -67,7 +72,7 @@ namespace SwordLand.DataAccess.MSSQL.Migrations
 
                     b.HasIndex("ParentCommentId");
 
-                    b.HasIndex("PostId");
+                    b.HasIndex("PostEntityId");
 
                     b.HasIndex("UserId");
 
@@ -238,17 +243,15 @@ namespace SwordLand.DataAccess.MSSQL.Migrations
                         .WithMany()
                         .HasForeignKey("ParentCommentId");
 
-                    b.HasOne("SwordLand.DataAccess.MSSQL.Entities.PostEntity", "Post")
+                    b.HasOne("SwordLand.DataAccess.MSSQL.Entities.PostEntity", null)
                         .WithMany("Comments")
-                        .HasForeignKey("PostId");
+                        .HasForeignKey("PostEntityId");
 
                     b.HasOne("SwordLand.DataAccess.MSSQL.Entities.UserEntity", "User")
                         .WithMany()
                         .HasForeignKey("UserId");
 
                     b.Navigation("ParentComment");
-
-                    b.Navigation("Post");
 
                     b.Navigation("User");
                 });
