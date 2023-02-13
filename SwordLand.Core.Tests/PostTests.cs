@@ -43,7 +43,7 @@ namespace SwordLand.Core.Tests
             Assert.Equal(_text, post.Summery);
             Assert.Equal(_category, post.Category);
             Assert.Equal(_date, post.CreatedAt);
-            Assert.True(post.IsPublished);
+            Assert.Equal(true, post.IsPublished);
         }
 
         #endregion

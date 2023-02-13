@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 
 namespace SwordLand.Core.Models
 {
@@ -42,7 +41,6 @@ namespace SwordLand.Core.Models
         public DateTime CreatedAt { get; private set; }
         public bool IsPublished { get; private set; }
         public DateTime LastModified { get; private set; }
-        public IList<Comment> Comments { get; private set; }
 
         public static Post Create(
             Guid id,

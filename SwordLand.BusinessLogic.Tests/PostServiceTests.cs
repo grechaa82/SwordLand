@@ -66,8 +66,8 @@ namespace SwordLand.BusinessLogic.Tests
             var post = _postService.GetById(postId.ToString());
 
             // Assert
-            Assert.NotNull(post);
-            Assert.Equal(postId, post.Id);
+            Assert.NotNull(post.Item1);
+            Assert.Equal(postId, post.Item1.Id);
         }
 
         [Fact]
@@ -77,11 +77,53 @@ namespace SwordLand.BusinessLogic.Tests
             var exceptionMessage = "Value cannot be null. (Parameter 'post is incorrect')";
 
             // Act
-            Action postAction = () => _postService.GetById(Guid.NewGuid().ToString());
+            Action postAction = () =>_postService.GetById(Guid.NewGuid().ToString());
 
             // Assert
             ArgumentException exception = Assert.Throws<ArgumentNullException>(postAction);
             Assert.Equal(exceptionMessage, exception.Message);
+        }
+
+        [Fact]
+        public void GetById_WhenCommentExists_ShouldReturnComment()
+        {
+            // Arrange
+            var commentsDto = CommentCreater.CreateManyComment(5);
+            var postId = _post.Id;
+
+
+            _postRepositoryMock.Setup(x => x.GetById(postId.ToString()))
+                .Returns(_post);
+            _postRepositoryMock.Setup(x => x.GetCommentsById(postId.ToString()))
+                .Returns(commentsDto);
+
+            // Act
+            var post = _postService.GetById(postId.ToString());
+
+            // Assert
+            Assert.NotNull(post.Item2);
+            Assert.True(post.Item2.Count() == 5);
+        }
+
+        [Fact]
+        public void GetById_WhenCommentDoesNotExist_ArgumentNullException()
+        {
+            // Arrange
+            var commentsDto = CommentCreater.CreateManyComment(5);
+            var postId = _post.Id;
+
+            _postRepositoryMock.Setup(x => x.GetById(postId.ToString()))
+                .Returns(_post);
+            _postRepositoryMock.Setup(x => x.GetCommentsById(postId.ToString()))
+                .Returns(commentsDto);
+
+            // Act
+            var post = _postService.GetById(postId.ToString());
+
+            // Assert
+            Assert.NotNull(post.Item2);
+            Assert.True(post.Item2.Count() == 0);
+            Assert.Empty(post.Item2);
         }
 
         #endregion

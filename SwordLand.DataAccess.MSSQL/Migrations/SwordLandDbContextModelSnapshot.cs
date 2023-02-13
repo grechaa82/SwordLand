@@ -239,7 +239,7 @@ namespace SwordLand.DataAccess.MSSQL.Migrations
                         .HasForeignKey("ParentCommentId");
 
                     b.HasOne("SwordLand.DataAccess.MSSQL.Entities.PostEntity", "Post")
-                        .WithMany("Comments")
+                        .WithMany()
                         .HasForeignKey("PostId");
 
                     b.HasOne("SwordLand.DataAccess.MSSQL.Entities.UserEntity", "User")
@@ -293,11 +293,6 @@ namespace SwordLand.DataAccess.MSSQL.Migrations
                         .HasForeignKey("RoleId");
 
                     b.Navigation("Role");
-                });
-
-            modelBuilder.Entity("SwordLand.DataAccess.MSSQL.Entities.PostEntity", b =>
-                {
-                    b.Navigation("Comments");
                 });
 #pragma warning restore 612, 618
         }
