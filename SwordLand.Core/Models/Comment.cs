@@ -7,15 +7,15 @@ namespace SwordLand.Core.Models
     {
         private Comment(
             Guid id, 
-            User user, 
-            Post post, 
+            User user,
+            Guid postId, 
             string content, 
             Comment parentComment, 
             DateTime createdAt)
         {
             Id = id;
             User = user;
-            Post = post;
+            PostId= postId;
             Content = content;
             ParentComment = parentComment;
             CreatedAt = createdAt;
@@ -23,14 +23,14 @@ namespace SwordLand.Core.Models
 
         public Guid Id { get; private set; }
         public User User { get; private set; }
-        public Post Post { get; private set; }
+        public Guid PostId { get; private set; }
         public string Content { get; private set; }
         public Comment? ParentComment { get; private set; }
         public DateTime CreatedAt { get; private set; }
 
         public static Comment Create(
             User user,
-            Post post,
+            Guid postId,
             string content,
             Comment parentComment) 
         {
@@ -39,9 +39,9 @@ namespace SwordLand.Core.Models
                 throw new ArgumentNullException($"{nameof(user)} cannot be null");
             }
 
-            if (post is null)
+            if (postId == Guid.Empty)
             {
-                throw new ArgumentNullException($"{nameof(post)} cannot be null");
+                throw new ArgumentNullException($"{nameof(postId)} cannot be null or empty");
             }
 
             if (string.IsNullOrWhiteSpace(content))
@@ -57,7 +57,7 @@ namespace SwordLand.Core.Models
             var comment = new Comment(
                 Guid.NewGuid(),
                 user, 
-                post,
+                postId,
                 content,
                 parentComment,
                 DateTime.Now);
