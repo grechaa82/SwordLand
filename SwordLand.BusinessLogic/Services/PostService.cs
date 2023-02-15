@@ -1,4 +1,4 @@
-﻿using SwordLand.Core.Interfaces.Repository;
+﻿    using SwordLand.Core.Interfaces.Repository;
 using SwordLand.Core.Interfaces.Services;
 using SwordLand.Core.Models;
 using System;
@@ -19,22 +19,16 @@ namespace SwordLand.BusinessLogic.Services
             return _postRepository.Get();
         }
 
-        public (Post, List<Comment>) GetById(string postId)
+        public Post GetById(string postId)
         {
             var post = _postRepository.GetById(postId);
-            var comments = _postRepository.GetCommentsById(postId);
 
             if (post == null)
             {
                 throw new ArgumentNullException($"{nameof(post)} is incorrect");
             }
 
-            /*if (comments == null)
-            {
-                throw new ArgumentNullException($"{nameof(comments)} is incorrect");
-            }*/
-
-            return (post, comments);
+            return post;
         }
         
         public Post Create(

@@ -30,7 +30,7 @@ namespace SwordLand.API.Controllers
         }
 
         [HttpGet("{postId}")]
-        public (Post, List<Comment>) Post(string postId)
+        public Post Post(string postId)
         {
             var result = _postService.GetById(postId);
 
