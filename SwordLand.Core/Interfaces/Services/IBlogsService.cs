@@ -1,10 +1,11 @@
 ﻿using SwordLand.Core.Models;
+using System.Threading.Tasks;
 
 namespace SwordLand.Core.Interfaces.Services
 {
     public interface IBlogsService
     {
-        User[] Get();
-        User GetByName(string name);
+        Task<User[]> Get();
+        Task<User> GetByName(string name);
     }
 }

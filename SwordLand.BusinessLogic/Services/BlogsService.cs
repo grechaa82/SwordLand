@@ -1,6 +1,7 @@
 ﻿using SwordLand.Core.Interfaces.Repository;
 using SwordLand.Core.Interfaces.Services;
 using SwordLand.Core.Models;
+using System.Threading.Tasks;
 
 namespace SwordLand.BusinessLogic.Services
 {
@@ -13,14 +14,14 @@ namespace SwordLand.BusinessLogic.Services
             _blogsRepository = blogsRepository;
         }
 
-        public User[] Get()
+        public async Task<User[]> Get()
         {
-            return _blogsRepository.Get();
+            return await _blogsRepository.Get();
         }
 
-        public User GetByName(string name)
+        public async Task<User> GetByName(string name)
         {
-            return _blogsRepository.GetByName(name);
+            return await _blogsRepository.GetByName(name);
         }
     }
 }

@@ -3,6 +3,7 @@ using SwordLand.Core.Interfaces.Services;
 using SwordLand.Core.Models;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace SwordLand.BusinessLogic.Services
 {
@@ -14,14 +15,14 @@ namespace SwordLand.BusinessLogic.Services
             _postRepository = postRepository;
         }
 
-        public Post[] Get()
+        public async Task<Post[]> Get()
         {
-            return _postRepository.Get();
+            return await _postRepository.Get();
         }
 
-        public Post GetById(string postId)
+        public async Task<Post> GetById(string postId)
         {
-            var post = _postRepository.GetById(postId);
+            var post = await _postRepository.GetById(postId);
 
             if (post == null)
             {
@@ -31,15 +32,15 @@ namespace SwordLand.BusinessLogic.Services
             return post;
         }
         
-        public Post Create(
+        public async Task<Post> Create(
             string userId, 
             string title, 
             string content, 
             string summery, 
             string category)
         {
-            var User = _postRepository.GetUser(userId);
-            var Category = _postRepository.GetCategory(category);
+            var User = await _postRepository.GetUser(userId);
+            var Category = await _postRepository.GetCategory(category);
             
             var guid = Guid.NewGuid();
             var date = DateTime.Now;
@@ -55,12 +56,12 @@ namespace SwordLand.BusinessLogic.Services
                 date,
                 default);
 
-            return _postRepository.Create(result);
+            return await _postRepository.Create(result);
         }
 
-        public void Delete(string postId)
+        public async Task Delete(string postId)
         {
-            var post = _postRepository.GetById(postId);
+            var post = await _postRepository.GetById(postId);
 
             if (post is null)
             {
@@ -78,10 +79,10 @@ namespace SwordLand.BusinessLogic.Services
                 DateTime.Now,
                 false);
 
-            _postRepository.Delete(deletedPost);
+            await _postRepository.Delete(deletedPost);
         }
 
-        public void Update(
+        public async Task Update(
             string id, 
             string userId, 
             string title, 
@@ -89,7 +90,7 @@ namespace SwordLand.BusinessLogic.Services
             string summery, 
             string category)
         {
-            var post = _postRepository.GetById(id);
+            var post = await _postRepository.GetById(id);
 
             if (post is null)
             {
@@ -107,7 +108,7 @@ namespace SwordLand.BusinessLogic.Services
                 DateTime.Now,
                 default);
 
-            _postRepository.Update(updatedPost);
+            await _postRepository.Update(updatedPost);
         }
     }
 }

@@ -2,6 +2,7 @@
 using SwordLand.Core.Interfaces.Services;
 using SwordLand.Core.Models;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace SwordLand.API.Controllers
 {
@@ -17,16 +18,16 @@ namespace SwordLand.API.Controllers
         }
 
         [HttpGet]
-        public IActionResult Blogs()
+        public async Task<IActionResult> Blogs()
         {
-            var result = _blogsService.Get();
+            var result = await _blogsService.Get();
             return Ok(result);
         }
 
         [HttpGet("{userNickName}")]
-        public IActionResult UserBlog(string userNickName)
+        public async Task<IActionResult> UserBlog(string userNickName)
         {
-            var result = _blogsService.GetByName(userNickName);
+            var result = await _blogsService.GetByName(userNickName);
             return Ok(result);
         }
     }

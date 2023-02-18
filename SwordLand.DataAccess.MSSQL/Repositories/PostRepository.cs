@@ -6,6 +6,7 @@ using SwordLand.DataAccess.MSSQL.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace SwordLand.DataAccess.MSSQL.Repositories
 {
@@ -22,28 +23,28 @@ namespace SwordLand.DataAccess.MSSQL.Repositories
             _mapper = mapper;
         }
 
-        public Post[] Get()
+        public async Task<Post[]> Get()
         {
-            var posts = _context.Post
+            var posts = await _context.Post
                 .Where(x => x.IsPublished == true)
                 .Include(x => x.User)
                 .Include(x => x.Category)
                 .Take(20)
                 .AsNoTracking()
-                .ToArray();
+                .ToArrayAsync();
 
             return _mapper.Map<PostEntity[], Post[]>(posts);
         }
 
-        public Post GetById(string postId)
+        public async Task<Post> GetById(string postId)
         {
-            var post = _context.Post
+            var post = await _context.Post
                 .Where(x => x.IsPublished == true && x.Id.ToString() == postId)
                 .Include(x => x.User)
                 .Include(x => x.Category)
                 .Include(x => x.Comments)
                 .AsNoTracking()
-                .FirstOrDefault();
+                .FirstOrDefaultAsync();
 
             if (post == null)
             {
@@ -53,37 +54,37 @@ namespace SwordLand.DataAccess.MSSQL.Repositories
             return _mapper.Map<PostEntity, Post>(post);
         }
 
-        public Post Create(Post post)
+        public async Task<Post> Create(Post post)
         {
             var result = _mapper.Map<Post, PostEntity>(post);
 
             using (_context)
             {
-                _context.Post.Add(result);
+                await _context.Post.AddAsync(result);
 
-                _context.SaveChanges();
+                await _context.SaveChangesAsync();
             }
 
             return post;
         }
 
-        public void Delete(Post post)
+        public async Task Delete(Post post)
         {
             var result = _mapper.Map<Post, PostEntity>(post);
 
             using (_context)
             {
                 _context.Update(result);
-
-                _context.SaveChanges();
+                
+                await _context.SaveChangesAsync();
             }
         }
 
-        public User GetUser(string userId)
+        public async Task<User> GetUser(string userId)
         {
-            var result = _context.User
+            var result = await _context.User
                 .AsNoTracking()
-                .FirstOrDefault(x => x.Id.ToString() == userId);
+                .FirstOrDefaultAsync(x => x.Id.ToString() == userId);
 
             if (result is null)
             {
@@ -93,11 +94,11 @@ namespace SwordLand.DataAccess.MSSQL.Repositories
             return _mapper.Map<UserEntity, User>(result);
         }
 
-        public Category GetCategory(string category)
+        public async Task<Category> GetCategory(string category)
         {
-            var result = _context.Category
+            var result = await _context.Category
                 .AsNoTracking()
-                .FirstOrDefault(x => x.Title == category);
+                .FirstOrDefaultAsync(x => x.Title == category);
 
             if (result is null)
             {
@@ -107,7 +108,7 @@ namespace SwordLand.DataAccess.MSSQL.Repositories
             return _mapper.Map<CategoryEntity, Category>(result);
         }
 
-        public void Update(Post post)
+        public async Task Update(Post post)
         {
             var result = _mapper.Map<Post, PostEntity>(post);
 
@@ -115,7 +116,7 @@ namespace SwordLand.DataAccess.MSSQL.Repositories
             {
                 _context.Update(result);
 
-                _context.SaveChanges();
+                await _context.SaveChangesAsync();
             }
         }
     }

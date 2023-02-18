@@ -6,6 +6,7 @@ using SwordLand.DataAccess.MSSQL.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace SwordLand.DataAccess.MSSQL.Repositories
 {
@@ -20,22 +21,22 @@ namespace SwordLand.DataAccess.MSSQL.Repositories
             _mapper = mapper;
         }
 
-        public User[] Get()
+        public async Task<User[]> Get()
         {
-            var result = _context.User.OrderBy(x => x.Rating)
+            var result = await _context.User.OrderBy(x => x.Rating)
                 .Include(x => x.Role)
                 .Take(10)
                 .AsNoTracking()
-                .ToArray();
+                .ToArrayAsync();
 
             return _mapper.Map<UserEntity[], User[]>(result);
         }
 
-        public User GetByName(string name)
+        public async Task<User> GetByName(string name)
         {
-            var result = _context.User.Where(x => x.NickName.ToLower() == name.ToLower())
+            var result = await _context.User.Where(x => x.NickName.ToLower() == name.ToLower())
                 .AsNoTracking()
-                .FirstOrDefault();
+                .FirstOrDefaultAsync();
 
             if (result is null)
             {

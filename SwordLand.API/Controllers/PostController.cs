@@ -5,6 +5,7 @@ using SwordLand.API.Models;
 using SwordLand.Core.Interfaces.Services;
 using SwordLand.Core.Models;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace SwordLand.API.Controllers
 {
@@ -24,23 +25,23 @@ namespace SwordLand.API.Controllers
         }
 
         [HttpGet]
-        public Post[] Posts()
+        public async Task<Post[]> Posts()
         {
-            return _postService.Get();
+            return await _postService.Get();
         }
 
         [HttpGet("{postId}")]
-        public Post Post(string postId)
+        public async Task<Post> Post(string postId)
         {
-            var result = _postService.GetById(postId);
+            var result = await _postService.GetById(postId);
 
             return result;
         }
 
         [HttpPost("[action]")]
-        public Post Create(PostRequest post)
+        public async Task<Post> Create(PostRequest post)
         {
-            return _postService.Create(
+            return await _postService.Create(
                 post.UserId,
                 post.Title,
                 post.Content,
@@ -49,16 +50,16 @@ namespace SwordLand.API.Controllers
         }
 
         [HttpDelete("{postId}/[action]")]
-        public IActionResult Delete(string postId)
+        public async Task<IActionResult> Delete(string postId)
         {
-            _postService.Delete(postId);
+            await _postService.Delete(postId);
             return Ok();
         }
 
         [HttpPatch("{postId}/[action]")]
-        public IActionResult Update(PostRequest post, string postId)
+        public async Task<IActionResult> Update(PostRequest post, string postId)
         {
-            _postService.Update(
+            await _postService.Update(
                 postId,
                 post.UserId,
                 post.Title,
